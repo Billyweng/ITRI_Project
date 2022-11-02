@@ -5,7 +5,6 @@ import {GLTFLoader} from '../node_modules/three/examples/jsm/loaders/GLTFLoader'
 import {OrbitControls, PrbitControls} from '../node_modules/three/examples/jsm/controls/OrbitControls'
 import { TextureLoader } from 'three'
 
-  
 			const renderer = new THREE.WebGLRenderer({
         alpha:true
       });
@@ -21,21 +20,21 @@ import { TextureLoader } from 'three'
          1000 
          );
 
-      var RotationAngleX = 0;
+    /*   var RotationAngleX = 0;
       var RotationAngleY = 0;
       var RotationAngleZ = 0;
-
+ */
 
       /* 鏡頭控制器 */
       const controls = new OrbitControls(camera,renderer.domElement);
       
       /* 鏡頭控制器自動旋轉啟動 */
-      controls.autoRotate = true;
+      /* controls.autoRotate = true; */
       
       /* 相機位置 */
-			camera.position.set(0,5,10);
+			camera.position.set(0,7,9);
+      camera.rotation.set(-0.60,0,0);
       
-
       /* -----------------------------------------------------增加光源 AmbientLight 平行光---------------------------- */
       const light = new THREE.AmbientLight("rgb(255, 255, 255)", 0.4); // soft white light
       scene.add( light );
@@ -54,15 +53,15 @@ import { TextureLoader } from 'three'
      
     
       /* ------------------------------------------------------------load model--------------------------------------------- */
-
-      const textureload=new TextureLoader();
-      const texturemap=textureload.load('../static/textures/BG2.jpg');
       
-      const metalmap=textureload.load('../static/model/metal.jpg');
+        const textureload=new TextureLoader();
+        const texturemap=textureload.load('../static/textures/BG2.jpg');
+
+        const metalmap=textureload.load('../static/model/metal.jpg');
 
 
 
-      const Loader = new GLTFLoader();
+        const Loader = new GLTFLoader();
       /* 導入GLB檔案格式 */
       Loader.load( '../static/model/gearbox.glb', function ( gltf ) {
        
@@ -77,10 +76,13 @@ import { TextureLoader } from 'three'
             envMap:texturemap ,
             envMapIntensity: 3
         });
-
+        /* gltf.rotation.x = Math.PI/4;
+        gltf.rotation.y = Math.PI/4; */
 
         let model = gltf.scene;
-       
+       /* model.rotation.x = -Math.PI/2; */
+
+
         /* 設定材質球到導入物件上 */
         model.traverse((child, i) => {
               if (child.isMesh) {
@@ -89,22 +91,15 @@ import { TextureLoader } from 'three'
               }
             });
 
+           /* 物件導入到場景 */
+            scene.add( model );
 
-      /*----------------------------------------------------- 物件座標位置-------------------------------------- */
-        gltf.scene.position.y=0;
-        gltf.scene.rotation.x=RotationAngleX;
-        gltf.scene.rotation.y=RotationAngleY;
-        gltf.scene.rotation.z=RotationAngleZ;
-	    
-      
-        /* 物件導入到場景 */
-        scene.add( model );
+  
+       
 
       }, undefined, function ( error ) {
 	    console.error( error );
       });
-
-
 
 
     
@@ -114,24 +109,22 @@ import { TextureLoader } from 'three'
         const gridHelper = new THREE.GridHelper( size, divisions );
         scene.add( gridHelper );
 
+/*----------------------------------------------------- 動畫--------------------------------------------- */
+			
 
-      /*--------------------------------------------------------------- 動畫--------------------------------------------- */
-			function animate() {
-				requestAnimationFrame( animate );
-
+  
+      function animate() {
+        requestAnimationFrame( animate );
+  
+        /*  */
         /* 鏡頭控制器旋轉 */
-	      controls.update();
-
-				renderer.render( scene, camera );
-			};
-
-     
-
+        /* controls.update(); */
       
-
-
-
-
+        renderer.render( scene, camera );
+        
+      };
+      
+  
 
 			animate();
 
